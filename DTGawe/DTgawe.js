@@ -48,6 +48,9 @@ class DTgawe {
         this.inputsearch = document.createElement("input");
         this.areasearch = document.createElement("select");
         this.scopeOption = document.createElement("option");
+        this.exportButton = this.cDiv.cloneNode();
+        this.exportBody = this.cDiv.cloneNode();
+        this.exportCsv = this.cSpan.cloneNode();
         this.labelfooter = this.cSpan.cloneNode();
         this.author = this.cSpan.cloneNode();
         this.prev = this.cSpan.cloneNode();
@@ -59,7 +62,6 @@ class DTgawe {
         this.aboutPageDesc = this.cDiv.cloneNode();
         this.aboutPageClose = this.cSpan.cloneNode();
         this.paragraph = document.createElement('p');
-
 
         this.initialize();
         }
@@ -113,6 +115,16 @@ class DTgawe {
         this.labelsearch.appendChild(this.inputsearch);
         this.formsearch.append(this.labelsearch, this.labelScope);
         this.searchbar.appendChild(this.formsearch);
+
+        this.exportButton.innerHTML = "Export &nbsp;&nbsp;&nbsp;&nbsp;&#11147;";
+        this.exportButton.classList.add("dt-export-button");
+        this.exportButton.addEventListener("click", ()=>{this.toogleExport()});
+        this.exportCsv.innerHTML = "&#128209; .CSV";
+        this.exportCsv.classList.add("dt-export-csv");
+        this.exportCsv.addEventListener("click", ()=>{this.downloadCSV()});
+        this.exportBody.appendChild(this.exportCsv);
+        this.exportBody.classList.add("dt-export-body");
+        this.searchbar.append(this.exportButton, this.exportBody);
 
         this.rowError.classList.add("dt-row");
         this.rowError.classList.add("dt-row-no-data");
@@ -174,7 +186,7 @@ class DTgawe {
                 this.pageView.innerHTML = "Page " + this.currentHalaman + " out of " + this.halaman.length;
                 this.resizeTableHeaderColumn();
             } else {
-                console.log("Error: exceded page range");
+                console.error("Error: exceded page range");
             }
         } else if (cd === "next") {
             let nextP = this.currentHalaman + 1;
@@ -183,7 +195,7 @@ class DTgawe {
                 this.currentHalaman = nextP;
             }
         } else {
-            console.log("Error Loading Page");
+            console.error("Error Loading Page");
         }
     }
 
@@ -296,7 +308,7 @@ class DTgawe {
      * @param {Array} datas - The data to be used as scope options.
      * @returns {Array} - An array of option elements.
      */
-    getScopeAsElements(datas){
+    getScopeAsElements(datas) {
         let arr = Object.getOwnPropertyNames(datas[0]);
         let arrEl = [];
         let i = 0;
@@ -362,7 +374,7 @@ class DTgawe {
      * @method resizeTableHeaderColumn
      * @description Resizes the table header and columns to fit the content.
      */    
-    resizeTableHeaderColumn(){
+    resizeTableHeaderColumn() {
         setTimeout(()=>{
             if(this.body.hasChildNodes){
                 const tHeader = this.body.children[0];
@@ -372,19 +384,19 @@ class DTgawe {
                     let arrColumn = [];
                     let widthBody = parseFloat(window.getComputedStyle(this.body).getPropertyValue("width")) - 20;
                     let divideWidthByChildren = widthBody / (bodyChildren[0].children.length - 1);
-                    for(let x=0; x<bodyChildren.length; x++){
+                    for(let x=0; x<bodyChildren.length; x++) {
                         for(let d=1; d<bodyChildren[x].children.length; d++){
                             bodyChildren[x].children[d].style = `width: ${divideWidthByChildren}px`;
                         }
                     }
-                    for(let s= 0; s < childNo2.children.length; s++){
+                    for(let s= 0; s < childNo2.children.length; s++) {
                         const elRect = window.getComputedStyle(childNo2.children[s]);
                         arrColumn.push(elRect.getPropertyValue("width"));
                     }
-                    for(let i=0; i < tHeader.children.length; i++){
+                    for(let i=0; i < tHeader.children.length; i++) {
                         tHeader.children[i].style = `width: ${arrColumn[i]};`;
                     }
-                }else{
+                } else {
                     this.textError.innerHTML = "Error. The header dimension does not match with the data!";
                     this.rowError.appendChild(this.textError);
                     this.body.replaceChildren(this.rowError);
@@ -397,14 +409,31 @@ class DTgawe {
      * @method toogleAboutPage
      * @description Close or open About Page.
      */
-    toogleAboutPage(act){
-        if(!this.minimizeStatus){
-            if(act){
+    toogleAboutPage(act) {
+        if(!this.minimizeStatus) {
+            if(act) {
                 this.aboutPage.style = "display: flex; opacity: 1; top: 0px; left: 0px;";
-            }else{
+            } else {
                 this.aboutPage.style = "display: none; opacity: 0;";
             }
         }
+    }
+
+    /**
+     * @method toogleExport
+     * @description Show/hide the dropdown menu for Export
+     */
+    toogleExport() {
+        setTimeout(() => {
+        const displayDDExport = this.exportBody.style.display;
+        if(displayDDExport === "none"){
+            this.exportButton.classList.add("dt-export-button-selected");
+            this.exportBody.style.display = "block";
+        } else {
+            this.exportButton.classList.remove("dt-export-button-selected");
+            this.exportBody.style.display = "none";
+        }
+        });
     }
 
     /**
@@ -433,5 +462,43 @@ class DTgawe {
             this.DynamicTable.style = "position: relative; min-width: 360px; max-height: 1000px; z-index:0;";
             this.resizeStatus = false;
         }
+    }
+
+    /**
+     * @method convertDataToCsv
+     * @description Convert the data into array of data delimitinated by comma and new line.
+     * @param {Array} stream - The array of objects to be converted.
+     * @returns {Array} - converted Data
+     */
+    convertCSV(stream) {
+        const data = stream;
+        const headers = Object.keys(data[0]);
+        let values = [];
+        values.push("No,"+headers);
+
+        for(let i = 0; i < data.length; i++) {
+            values.push((i+1)+","+Object.values(data[i]));
+        }
+
+        return values.join("\n");
+    }
+
+    /**
+     * @method downloadCSV
+     * @description Download data as CSV file
+     */
+    async downloadCSV(){
+        const download = (data) => {
+            const blob = new Blob([data], { type: 'text/csv' });          
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            a.href = url;
+            a.download = this.name+'.csv'; 
+            a.click();                      //Trigger download
+        }
+        const csv = this.convertCSV(this.data);
+        download(csv);
+        this.toogleExport();
     }
 }

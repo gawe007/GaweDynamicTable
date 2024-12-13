@@ -73,5 +73,5 @@ let dummyData = [
     { data: "Dummy 12", link: "http://localhost" }
 ];
 
-let dummyData2 = [{ name: "agus", age: 30}];
+let dummyData2 = [{ name: "agus", age: 30}, { name: "sandy", age: 40}];
 const table = new DTgawe("Contoh Tabel", dummyData, document.getElementById("container"));
