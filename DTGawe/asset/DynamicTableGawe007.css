@@ -1,0 +1,227 @@
+#DynamicTable{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    min-width: 360px;
+    max-height: 1000px;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: rgb(30,30,30);
+    box-shadow: 0px 0px 2px 0px rgb(37, 17, 56);
+    transition: max-height 1s;
+    overflow: hidden;
+}
+
+.dt-header{
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.dt-title{
+    display: block;
+    position: relative;
+    flex-grow: 8;
+    font-size: 20px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 25px;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-top: 10px ;
+}
+
+.dt-menu{
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    flex-grow: 2;
+    flex-basis: 50px;
+}
+
+.dt-reload-button, .dt-resize-window, .dt-minimize-window{
+    display: block;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius:2px;
+    text-align: center;
+    line-height: 25px;
+    margin: 10px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.dt-reload-button:hover, .dt-resize-window:hover, .dt-minimize-window:hover{
+    cursor: pointer;
+    background-color: rgb(83, 15, 146);
+    color:aqua;
+}
+
+.dt-menu-body{
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.dt-search-query{
+    padding: 5px;
+    color: inherit;
+    border:none;
+    border-bottom: 1px rgb(30,30,30) solid;
+    background-color: inherit;
+}
+
+.dt-search-area{
+    padding: 5px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+    width: fit-content;
+}
+
+.dt-body{
+    display: block;
+    position: relative;
+    padding: 2px;
+    margin: 0;
+    width: 99.95%;
+    max-height: auto;
+    background-color: aqua;
+    transition: max-height 0.5s linear;
+    overflow: hidden;
+}
+
+.dt-row{
+    display: flex;
+    flex-direction: left;
+    position: relative;
+    height: 30px;
+    overflow: hidden;
+    color:rgb(34, 34, 34);
+    align-items: center;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+.dt-row-no-data{
+    height: 200px;
+    background-color: rgb(208, 193, 223);
+}
+
+.dt-row-no-data p{
+    width: 100%;
+    line-height: 200px;
+    text-align: center;
+}
+
+.dt-row:nth-child(odd){
+    background-color: rgb(189, 160, 216);
+}
+
+.dt-row:nth-child(even){
+    background-color: rgb(214, 206, 221);
+}
+
+.dt-row:hover{
+    background-color: rgb(162, 93, 226);
+    transition: background-color 0.5s linear;
+}
+
+.dt-data{
+    display: inline-block;
+    position: relative;
+    padding-left: 5px;
+    margin: inherit;
+    text-decoration: none;
+    color: inherit;
+}
+
+.dt-data:hover, .dt-data:visited{
+    text-decoration: none;
+    color: inherit;
+}
+
+.dt-data:hover, .dt-data:active{
+    font-weight: bolder;
+}
+.dt-col-num{
+    line-height: 28px;
+    padding-left: 5px;
+    min-width: 20px;
+}
+
+.dt-col-data{
+    width:auto;
+}
+
+.dt-col-data a, .dt-col-data a:visited, .dt-col-data a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+.dt-footer{
+    display: block;
+    position: relative;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: 10px;
+}
+
+.dt-pagination{
+    display: block;
+    position: relative;
+    padding-left: 5px;
+}
+
+.dt-pagination-pages{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dt-page{
+    display: block;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: small;
+    font-style: bolder;
+    padding: 2px;
+    cursor:pointer;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none ;
+}
+
+.dt-page:hover{
+    font-weight: bolder;
+}
+
+.dt-about{
+    display: block;
+    position: absolute;
+    right: 10px;
+    bottom: 2px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 600px) {
+    #DynamicTable{
+        width: 100%;
+    }
+}
