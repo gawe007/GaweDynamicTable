@@ -191,6 +191,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .dt-page{
@@ -218,6 +220,65 @@
     bottom: 2px;
     z-index: 2;
     cursor: pointer;
+}
+
+#dt-about-page{
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 30, 0.5);
+    opacity: 0;
+    z-index: 5;
+}
+
+.dt-about-page-body{
+    display: block;
+    position: relative;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    background-color: white;
+    filter: none;
+    z-index: 3;
+}
+
+.dt-about-page-title{
+    font-size: 1.6em;
+    font-weight: bold;
+    padding: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(30,30,30);
+    margin-bottom: 10px;
+}
+
+.dt-about-page-desc{
+    padding: 5px;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.dt-about-page-desc p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dt-about-page-desc p>a{
+    color: rgb(34, 34, 34);
+    cursor: pointer;
+}
+
+.dt-about-page-close{
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 5;
+    cursor:pointer;
 }
 
 @media screen and (min-width: 600px) {

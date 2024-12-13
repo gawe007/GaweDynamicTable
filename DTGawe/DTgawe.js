@@ -53,6 +53,13 @@ class DTgawe {
         this.prev = this.cSpan.cloneNode();
         this.next = this.cSpan.cloneNode();
         this.pageView = this.cDiv.cloneNode();
+        this.aboutPage = this.cDiv.cloneNode();
+        this.aboutPageBody = this.cDiv.cloneNode();
+        this.aboutPageTitle = this.cDiv.cloneNode();
+        this.aboutPageDesc = this.cDiv.cloneNode();
+        this.aboutPageClose = this.cSpan.cloneNode();
+        this.paragraph = document.createElement('p');
+
 
         this.initialize();
         }
@@ -116,12 +123,30 @@ class DTgawe {
 
         this.author.innerHTML = "gawe007";
         this.about.appendChild(this.author);
+        this.about.addEventListener("click", ()=>{this.toogleAboutPage(true)});
+
+        this.aboutPageTitle.innerHTML = "Gawe Dynamic Table";
+        this.aboutPageTitle.classList.add("dt-about-page-title");
+        let aboutDesc1 = this.paragraph.cloneNode();
+        aboutDesc1.innerHTML = `&#9997; You can see my recent updates for this JS Class on <a href="https://github.com/gawe007/GaweDynamicTable">GaweDynamicTable</a> repository.`;
+        let aboutDesc2 = this.paragraph.cloneNode();
+        aboutDesc2.innerHTML = `&#128563; Or just visit <a href="https://github.com/gawe007">My GitHub</a>`;
+        this.aboutPageDesc.append(aboutDesc1, aboutDesc2);
+        this.aboutPageDesc.classList.add("dt-about-page-desc");
+        this.aboutPageClose.innerHTML = "X";
+        this.aboutPageClose.classList.add("dt-about-page-close");
+        this.aboutPageClose.addEventListener("click", ()=>{this.toogleAboutPage(false)});
+        this.aboutPageBody.append(this.aboutPageTitle, this.aboutPageDesc, this.aboutPageClose);
+        this.aboutPageBody.classList.add("dt-about-page-body");
+        this.aboutPage.id = "dt-about-page";
+        this.aboutPage.appendChild(this.aboutPageBody);
+        this.aboutPage.addEventListener("click", ()=>{this.toogleAboutPage(false)});
 
         this.header.append(this.title, this.menu);
         this.pageHandler(1);
         this.footer.append(this.pagination, this.about);
 
-        this.DynamicTable.append(this.header, this.searchbar, this.body, this.footer);
+        this.DynamicTable.append(this.header, this.searchbar, this.body, this.footer, this.aboutPage);
         this.parent.appendChild(this.DynamicTable);
     }
 
@@ -186,9 +211,9 @@ class DTgawe {
             newTColData.innerHTML = "<p class='dt-data'>"+headers[i]+"</p>";
             arrHeaders.push(newTColData);
         }
-
         tHeader.append(...arrHeaders);
         arrayEl.push(tHeader);
+
         for (let d = 0; d < datas.length; d++) {
             let arrColData = [];
             const row = this.cDiv.cloneNode();
@@ -209,6 +234,7 @@ class DTgawe {
             row.append(...arrColData);
             arrayEl.push(row);
         }
+
         return arrayEl;
     }
 
@@ -247,11 +273,11 @@ class DTgawe {
         const arrayEl = [];
 
         this.prev.classList.add("dt-page");
-        this.prev.innerHTML = "&#8678; Prev";
+        this.prev.innerHTML = "&#9111; Prev";
         this.prev.addEventListener("click", () => { this.pageHandler("prev"); });
 
         this.next.classList.add("dt-page");
-        this.next.innerHTML = "Next &#8680;";
+        this.next.innerHTML = "Next &#9112;";
         this.next.addEventListener("click", () => { this.pageHandler("next"); });
 
         this.pageView.innerHTML = "Page " + this.currentHalaman + " out of " + this.halaman.length;
@@ -284,6 +310,7 @@ class DTgawe {
             arrEl.push(option);
             i++;
         });
+
         return arrEl;
     }
 
@@ -338,32 +365,46 @@ class DTgawe {
     resizeTableHeaderColumn(){
         setTimeout(()=>{
             if(this.body.hasChildNodes){
-            const tHeader = this.body.children[0];
-            const childNo2 = this.body.children[1];
-            const bodyChildren = this.body.children;
-            if(tHeader.children.length === childNo2.children.length){
-                let arrColumn = [];
-                let widthBody = parseFloat(window.getComputedStyle(this.body).getPropertyValue("width")) - 20;
-                let divideWidthByChildren = widthBody / (bodyChildren[0].children.length - 1);
-                for(let x=0; x<bodyChildren.length; x++){
-                    for(let d=1; d<bodyChildren[x].children.length; d++){
-                        bodyChildren[x].children[d].style = `width: ${divideWidthByChildren}px`;
+                const tHeader = this.body.children[0];
+                const childNo2 = this.body.children[1];
+                const bodyChildren = this.body.children;
+                if(tHeader.children.length === childNo2.children.length){
+                    let arrColumn = [];
+                    let widthBody = parseFloat(window.getComputedStyle(this.body).getPropertyValue("width")) - 20;
+                    let divideWidthByChildren = widthBody / (bodyChildren[0].children.length - 1);
+                    for(let x=0; x<bodyChildren.length; x++){
+                        for(let d=1; d<bodyChildren[x].children.length; d++){
+                            bodyChildren[x].children[d].style = `width: ${divideWidthByChildren}px`;
+                        }
                     }
+                    for(let s= 0; s < childNo2.children.length; s++){
+                        const elRect = window.getComputedStyle(childNo2.children[s]);
+                        arrColumn.push(elRect.getPropertyValue("width"));
+                    }
+                    for(let i=0; i < tHeader.children.length; i++){
+                        tHeader.children[i].style = `width: ${arrColumn[i]};`;
+                    }
+                }else{
+                    this.textError.innerHTML = "Error. The header dimension does not match with the data!";
+                    this.rowError.appendChild(this.textError);
+                    this.body.replaceChildren(this.rowError);
                 }
-                for(let s= 0; s < childNo2.children.length; s++){
-                    const elRect = window.getComputedStyle(childNo2.children[s]);
-                    arrColumn.push(elRect.getPropertyValue("width"));
-                }
-                for(let i=0; i < tHeader.children.length; i++){
-                    tHeader.children[i].style = `width: ${arrColumn[i]};`;
-                }
-            }else{
-                this.textError.innerHTML = "Error. The header dimension does not match with the data!";
-                this.rowError.appendChild(this.textError);
-                this.body.replaceChildren(this.rowError);
-            }
             }
         })
+    }
+
+    /**
+     * @method toogleAboutPage
+     * @description Close or open About Page.
+     */
+    toogleAboutPage(act){
+        if(!this.minimizeStatus){
+            if(act){
+                this.aboutPage.style = "display: flex; opacity: 1; top: 0px; left: 0px;";
+            }else{
+                this.aboutPage.style = "display: none; opacity: 0;";
+            }
+        }
     }
 
     /**
