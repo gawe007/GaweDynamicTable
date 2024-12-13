@@ -5,6 +5,7 @@
 - Automatic Object translation into HTML Elements.
 - Data search based on selected column.
 - Auto pagination for viewing.
+- [New] Export to CSV.
 - The table can be minimized or resized.
 
 ## Parameter
