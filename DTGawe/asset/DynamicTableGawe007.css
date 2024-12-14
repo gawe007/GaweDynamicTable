@@ -219,6 +219,12 @@
     color: inherit;
 }
 
+.dt-col-sort{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+}
+
 .dt-footer{
     display: block;
     position: relative;

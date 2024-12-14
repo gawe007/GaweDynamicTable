@@ -11,12 +11,12 @@ class DTgawe {
      * @param {number} dataPerPage - The maximum number of data to be displayed per page.
      */
     constructor(name, data, parent, dataPerPage) {
-        this.name = name || "Dynamic Table by gawe007";
-        this.data = data || [];
-        this.parent = parent || null;
+        this.name = name ?? "Dynamic Table by gawe007";
+        this.data = data ?? [];
+        this.parent = parent ?? null;
         this.maxDataPerPage = dataPerPage || 10;
-        if(this.data === null || this.data === "" || this.data === undefined){ return console.log("Dynamic Table error: Data isn't present or unreadable.")}
-        if(typeof parent !== "object"){
+        if(this.data === null || this.data === "" || this.data === undefined) { return console.error("Dynamic Table error: Data isn't present or unreadable.")};
+        if(typeof parent !== "object") {
             console.error("Dynamic Table error: Parent Element Not Detected!");
         }else{
         this.halaman = [];
@@ -61,7 +61,7 @@ class DTgawe {
         this.aboutPageTitle = this.cDiv.cloneNode();
         this.aboutPageDesc = this.cDiv.cloneNode();
         this.aboutPageClose = this.cSpan.cloneNode();
-        this.paragraph = document.createElement('p');
+        this.paragraph = this.cP.cloneNode();
 
         this.initialize();
         }
@@ -219,8 +219,21 @@ class DTgawe {
         let headers = Object.getOwnPropertyNames(datas[0]);
         let arrHeaders = [];
         for(let i =0; i < headers.length; i++){
+
+            const newTColValue = document.createElement('input');
+            newTColValue.name = "value-"+i;
+            newTColValue.id = "dt-value-col-"+i;
+            newTColValue.type = "hidden";
+            newTColValue.value = headers[i];
+
+            const colSort = this.cSpan.cloneNode();
+                colSort.classList.add("dt-col-sort");
+                colSort.innerHTML = this.sortSymbol("desc");
+                colSort.id = "dt-col-"+i;
+                colSort.addEventListener("click", ()=>{this.toogleSort(i, "desc")});
             const newTColData = tColData.cloneNode();
             newTColData.innerHTML = "<p class='dt-data'>"+headers[i]+"</p>";
+            newTColData.append(colSort, newTColValue);
             arrHeaders.push(newTColData);
         }
         tHeader.append(...arrHeaders);
@@ -468,7 +481,7 @@ class DTgawe {
      * @method convertDataToCsv
      * @description Convert the data into array of data delimitinated by comma and new line.
      * @param {Array} stream - The array of objects to be converted.
-     * @returns {Array} - converted Data
+     * @returns {Array} - converted Data.
      */
     convertCSV(stream) {
         const data = stream;
@@ -485,7 +498,7 @@ class DTgawe {
 
     /**
      * @method downloadCSV
-     * @description Download data as CSV file
+     * @description Download data as CSV file.
      */
     async downloadCSV(){
         const download = (data) => {
@@ -501,4 +514,45 @@ class DTgawe {
         download(csv);
         this.toogleExport();
     }
+
+    /**
+     * @method sortSymbol
+     * @description Return UTF-8 triangle symbol for sort button.
+     * @param {String} order - The sorting order.
+     * @returns {String} - UTF-8 Symbol in HTML Entity.
+     */
+    sortSymbol(order) {
+        return order === "asc" ? "&#9661;" : order === "desc" ? "&#9651;" : console.error("DTGawe error: Something wrong.");
+    }
+
+    /**
+     * @method toogleSort
+     * @description Toogle symbol sort when clicked
+     * @param {String} num - The column number
+     * @param {String} action - The action to be executed
+     */
+    toogleSort(num, action) {
+        const el = document.getElementById("dt-value-col-"+num);
+        const button = document.getElementById("dt-col-"+num);
+        const newButton = button.cloneNode();
+        const parentButton = button.parentNode;
+        if(action === "desc") {
+            console.log(el.value+" Sort desc clicked!");
+            newButton.innerHTML = this.sortSymbol("asc");
+            newButton.addEventListener("click", ()=>{this.toogleSort(num, "asc")});
+            parentButton.replaceChild(newButton, button);
+        } else if (action === "asc"){
+            console.log(el.value+" Sort asc clicked!");
+            newButton.innerHTML = this.sortSymbol("desc");
+            newButton.addEventListener("click", ()=>{this.toogleSort(num, "desc")});
+            parentButton.replaceChild(newButton, button);
+        }
+    }
+
+    /**
+     * @method sortColumn
+     * @description Sort data displayed based wich column header selected to be sorted
+     * @param {String} columnName - The name of column to be sorted
+     * @param {String} order - Ascending or Descending
+     */
 }
