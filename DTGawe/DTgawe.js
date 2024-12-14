@@ -137,7 +137,7 @@ class DTgawe {
         this.about.appendChild(this.author);
         this.about.addEventListener("click", ()=>{this.toogleAboutPage(true)});
 
-        this.aboutPageTitle.innerHTML = "Gawe Dynamic Table";
+        this.aboutPageTitle.innerHTML = "Gawe Dynamic Table v1.1.0";
         this.aboutPageTitle.classList.add("dt-about-page-title");
         let aboutDesc1 = this.paragraph.cloneNode();
         aboutDesc1.innerHTML = `&#9997; You can see my recent updates for this JS Class on <a href="https://github.com/gawe007/GaweDynamicTable">GaweDynamicTable</a> repository.`;
