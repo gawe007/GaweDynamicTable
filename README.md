@@ -1,11 +1,12 @@
 # GaweDynamicTable
- My own HTML Dynamic Table created with vanilla JS & CSS. This Class convert an Array of Javascipt Object into a HTML Dynamic Table. See parameter, accepted data structure and usage/examples to use this in your need.  
+A HTML Dynamic Table created with vanilla JS & CSS. This Class convert an Array of Javascipt Object into a HTML Dynamic Table. See parameter, accepted data structure and usage/examples to use this in your need.  
 
 ## Feature
 - Automatic Object translation into HTML Elements.
 - Data search based on selected column.
 - Auto pagination for viewing.
-- [New] Export to CSV.
+- [New] Sort data by column (Asc or Desc).
+- Export to CSV.
 - The table can be minimized or resized.
 
 ## Parameter
