@@ -83,6 +83,7 @@ class DTgawe {
         this.title.classList.add("dt-title");
         this.menu.classList.add("dt-menu");
         this.searchbar.classList.add("dt-menu-body");
+        this.formsearch.classList.add("dt-form-search");
         this.pagination.classList.add("dt-pagination");
         this.pages.classList.add("dt-pagination-pages");
         this.breload.classList.add("dt-reload-button");
@@ -106,7 +107,7 @@ class DTgawe {
 
         this.formsearch.id = "dt-id-search";
         this.labelScope.innerHTML = " in ";
-        this.areasearch.name = "dt-search-scope";
+        this.areasearch.name = "dt-search-area";
         this.areasearch.append(...this.getScopeAsElements(this.data));
         this.areasearch.addEventListener("change", ()=>{this.searchData(this.data);});
         this.labelScope.appendChild(this.areasearch);
@@ -120,6 +121,8 @@ class DTgawe {
         this.formsearch.append(this.labelsearch, this.labelScope);
         this.searchbar.appendChild(this.formsearch);
 
+        this.exportEnclosure = this.cDiv.cloneNode();
+        this.exportEnclosure.classList.add("dt-export-enclosure");
         this.exportButton.innerHTML = "Export &nbsp;&nbsp;&nbsp;&nbsp;&#11147;";
         this.exportButton.classList.add("dt-export-button");
         this.exportButton.addEventListener("click", ()=>{this.toogleExport()});
@@ -128,7 +131,8 @@ class DTgawe {
         this.exportCsv.addEventListener("click", ()=>{this.downloadCSV()});
         this.exportBody.appendChild(this.exportCsv);
         this.exportBody.classList.add("dt-export-body");
-        this.searchbar.append(this.exportButton, this.exportBody);
+        this.exportEnclosure.append(this.exportButton, this.exportBody);
+        this.searchbar.append(this.exportEnclosure);
 
         this.rowError.classList.add("dt-row");
         this.rowError.classList.add("dt-row-no-data");
@@ -141,15 +145,17 @@ class DTgawe {
         this.about.appendChild(this.author);
         this.about.addEventListener("click", ()=>{this.toogleAboutPage(true)});
 
-        this.aboutPageTitle.innerHTML = "Gawe Dynamic Table v1.1.0";
+        this.aboutPageTitle.innerHTML = "Gawe Dynamic Table";
         this.aboutPageTitle.classList.add("dt-about-page-title");
+        let aboutDesc = this.paragraph.cloneNode();
+            aboutDesc.innerHTML = `Version 1.2.0`;
         let aboutDesc1 = this.paragraph.cloneNode();
             aboutDesc1.innerHTML = `&#9997; You can see my recent updates for this JS Class on <a href="https://github.com/gawe007/GaweDynamicTable">GaweDynamicTable</a> repository.`;
         let aboutDesc2 = this.paragraph.cloneNode();
             aboutDesc2.innerHTML = `&#128563; Or just visit <a href="https://github.com/gawe007">My GitHub</a>`;
-        this.aboutPageDesc.append(aboutDesc1, aboutDesc2);
+        this.aboutPageDesc.append(aboutDesc, aboutDesc1, aboutDesc2);
         this.aboutPageDesc.classList.add("dt-about-page-desc");
-        this.aboutPageClose.innerHTML = "X";
+        this.aboutPageClose.innerHTML = "&#10026;";
         this.aboutPageClose.classList.add("dt-about-page-close");
         this.aboutPageClose.addEventListener("click", ()=>{this.toogleAboutPage(false)});
         this.aboutPageBody.append(this.aboutPageTitle, this.aboutPageDesc, this.aboutPageClose);
@@ -435,7 +441,6 @@ class DTgawe {
      * @description Show/hide the dropdown menu for Export
      */
     toogleExport() {
-        setTimeout(() => {
         const displayDDExport = this.exportBody.style.display;
         if(displayDDExport === "none"){
             this.exportButton.classList.add("dt-export-button-selected");
@@ -444,7 +449,6 @@ class DTgawe {
             this.exportButton.classList.remove("dt-export-button-selected");
             this.exportBody.style.display = "none";
         }
-        });
     }
 
     /**
@@ -467,7 +471,7 @@ class DTgawe {
      */    
     resize() {
         if (!this.resizeStatus) {
-            this.DynamicTable.style = "display:block;position: fixed; top: 10px; left: 10px; max-width: 90%; max-height: 90%; overflow-y: scroll; overflow-x: hidden; z-index:2;";
+            this.DynamicTable.style = "display:block;position: fixed; top: 10px; left: 10px; max-width: 90%; max-height: 90%; overflow: hidden; z-index:2;";
             this.resizeStatus = true;
         } else {
             this.DynamicTable.style = "position: relative; min-width: 360px; max-height: 1000px; z-index:0;";

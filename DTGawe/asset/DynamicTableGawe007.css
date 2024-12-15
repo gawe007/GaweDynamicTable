@@ -15,6 +15,9 @@
     box-shadow: 0px 0px 2px 0px rgb(37, 17, 56);
     transition: max-height 1s;
     overflow: hidden;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-color: rgb(30,30,30) rgb(30,30,30);
 }
 
 .dt-header{
@@ -71,7 +74,18 @@
     position: relative;
     width: 100%;
     padding: 5px;
+    background-color: inherit;
     overflow:visible;
+}
+
+.dt-form-search{
+    background-color: inherit;
+    color: inherit;
+}
+
+.dt-form-search > label{
+    background-color: inherit;
+    color: inherit;
 }
 
 .dt-search-query{
@@ -90,36 +104,49 @@
     width: fit-content;
 }
 
+.dt-search-area > option{
+    background-color: inherit;
+    color: inherit;
+}
+
+.dt-export-enclosure{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: start;
+    align-items: first baseline;
+    min-width: 100px;
+    height: 30px;
+    margin-top: 5px;
+    overflow: visible;
+}
+
 .dt-export-button{
     display: block;
-    position: absolute;
-    top:5px;
-    right: 10px;
-    padding: 5px;
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     width: 70px;
-    height: 15px;
+    height: 25px;
     cursor:pointer;
     font-weight: lighter;
     box-shadow: none;
     user-select: none;
+    border: 1px transparent solid;
     z-index: 3;
-}
-
-.dt-export-button-selected{
-    box-shadow: 0px 0px 2px 0px rgb(30,30,30);
 }
 
 .dt-export-body{
     display: none;
-    position: absolute;
-    top:31px;
-    right: 10px;
-    width: 80px;
-    height: 25px;
+    position: relative;
+    width: 90px;
     cursor:pointer;
-    background-color: white;
+    background-color: transparent;
+    color: inherit;
+    border: 1px transparent solid;
     font-weight: lighter;
-    box-shadow: 0px 0px 2px 0px rgb(30,30,30);
     user-select: none;
     overflow: hidden;
     z-index: 3;
@@ -131,12 +158,13 @@
     cursor: pointer;
     width: auto;
     height: auto;
+    background-color: transparent;
+    color: inherit;
     font-size: smaller;
-    padding: 5px;
-}
-
-.dt-export-csv:hover{
-    background-color: rgb(238, 230, 230);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .dt-body{
@@ -217,12 +245,14 @@
 .dt-col-data a, .dt-col-data a:visited, .dt-col-data a:hover{
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
 }
 
 .dt-col-sort{
     display: inline-block;
     position: relative;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .dt-footer{
@@ -295,8 +325,10 @@
     position: relative;
     width: 300px;
     height: 300px;
+    padding: 10px;
     overflow: hidden;
-    background-color: white;
+    background-color: rgb(34, 34, 34);
+    color: aqua;
     filter: none;
     z-index: 3;
 }
@@ -323,7 +355,7 @@
 }
 
 .dt-about-page-desc p>a{
-    color: rgb(34, 34, 34);
+    color: inherit;
     cursor: pointer;
 }
 
@@ -339,5 +371,47 @@
 @media screen and (min-width: 600px) {
     #DynamicTable{
         width: 100%;
+    }
+    .dt-export-enclosure{
+        flex-direction: row;
+        flex-wrap: wrap-reverse;
+        margin-top: 0;
+        justify-content: end;
+    }
+    .dt-export-body{
+        position: absolute;
+        top: 30px;
+        right: 0px;
+        background-color: inherit;
+        color: inherit;
+    }
+    .dt-export-csv{
+        background-color: inherit;
+        color: inherit;
+    }
+}
+
+@media (prefers-color-scheme: dark){
+    #DynamicTable{
+        background-color: rgb(30, 30, 30);
+        color: aqua;
+        box-shadow: 0px 0px 5px 0px rgb(10,10,10);
+        scrollbar-color: aqua aqua;
+    }
+    .dt-search-query{
+        border-bottom: 1px rgb(200,240,200) solid;
+    }
+    .dt-export-body{
+        background-color: rgb(30, 30, 30);
+        color: aqua; 
+    }
+}
+
+@media (prefers-color-scheme: light){
+    #DynamicTable{
+        background-color: rgba(255, 255, 255);
+        color: rgb(34, 34, 34);
+        box-shadow: 0px 0px 5px 0px rgb(40, 40, 90);
+        scrollbar-color: rgb(30,30,30) rgb(30,30,30);
     }
 }
