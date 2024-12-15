@@ -15,55 +15,59 @@ class DTgawe {
         this.data = data ?? [];
         this.parent = parent ?? null;
         this.maxDataPerPage = dataPerPage || 10;
-        if(this.data === null || this.data === "" || this.data === undefined) { return console.error("Dynamic Table error: Data isn't present or unreadable.")};
+        if(this.data === null || this.data === "" || this.data === undefined) { return console.error("DTGawe error: Data isn't present or unreadable.")};
         if(typeof parent !== "object") {
-            console.error("Dynamic Table error: Parent Element Not Detected!");
+            console.error("DTGawe error: Parent Element Not Detected!");
         }else{
-        this.halaman = [];
-        this.tableHeader = [];
-        this.currentHalaman = 0;
-        this.minimizeStatus = false;
-        this.resizeStatus = false;
-        this.cDiv = document.createElement("div");
-        this.cSpan = document.createElement("span");
-        this.cP = document.createElement("p");
-        this.DynamicTable = this.cDiv.cloneNode();
-        this.header = this.cDiv.cloneNode();
-        this.body = this.cDiv.cloneNode();
-        this.footer = this.cDiv.cloneNode();
-        this.title = this.cDiv.cloneNode();
-        this.menu = this.cDiv.cloneNode();
-        this.searchbar = this.cDiv.cloneNode();
-        this.rowError = this.cDiv.cloneNode();
-        this.textError = this.cP.cloneNode();
-        this.pagination = this.cDiv.cloneNode();
-        this.pages = this.cDiv.cloneNode();
-        this.breload = this.cSpan.cloneNode();
-        this.bresize = this.cSpan.cloneNode();
-        this.bminimize = this.cSpan.cloneNode();
-        this.about = this.cDiv.cloneNode();
-        this.formsearch = document.createElement("form");
-        this.labelsearch = document.createElement("label");
-        this.labelScope = this.labelsearch.cloneNode();
-        this.inputsearch = document.createElement("input");
-        this.areasearch = document.createElement("select");
-        this.scopeOption = document.createElement("option");
-        this.exportButton = this.cDiv.cloneNode();
-        this.exportBody = this.cDiv.cloneNode();
-        this.exportCsv = this.cSpan.cloneNode();
-        this.labelfooter = this.cSpan.cloneNode();
-        this.author = this.cSpan.cloneNode();
-        this.prev = this.cSpan.cloneNode();
-        this.next = this.cSpan.cloneNode();
-        this.pageView = this.cDiv.cloneNode();
-        this.aboutPage = this.cDiv.cloneNode();
-        this.aboutPageBody = this.cDiv.cloneNode();
-        this.aboutPageTitle = this.cDiv.cloneNode();
-        this.aboutPageDesc = this.cDiv.cloneNode();
-        this.aboutPageClose = this.cSpan.cloneNode();
-        this.paragraph = this.cP.cloneNode();
+            this.halaman = [];
+            this.tableHeader = [];
+            this.currentHalaman = 0;
+            this.minimizeStatus = false;
+            this.resizeStatus = false;
+            this.sortOrder = "desc";
+            this.originalData = JSON.parse(JSON.stringify(this.data));
 
-        this.initialize();
+            //Element creation
+            this.cDiv = document.createElement("div");
+            this.cSpan = document.createElement("span");
+            this.cP = document.createElement("p");
+            this.DynamicTable = this.cDiv.cloneNode();
+            this.header = this.cDiv.cloneNode();
+            this.body = this.cDiv.cloneNode();
+            this.footer = this.cDiv.cloneNode();
+            this.title = this.cDiv.cloneNode();
+            this.menu = this.cDiv.cloneNode();
+            this.searchbar = this.cDiv.cloneNode();
+            this.rowError = this.cDiv.cloneNode();
+            this.textError = this.cP.cloneNode();
+            this.pagination = this.cDiv.cloneNode();
+            this.pages = this.cDiv.cloneNode();
+            this.breload = this.cSpan.cloneNode();
+            this.bresize = this.cSpan.cloneNode();
+            this.bminimize = this.cSpan.cloneNode();
+            this.about = this.cDiv.cloneNode();
+            this.formsearch = document.createElement("form");
+            this.labelsearch = document.createElement("label");
+            this.labelScope = this.labelsearch.cloneNode();
+            this.inputsearch = document.createElement("input");
+            this.areasearch = document.createElement("select");
+            this.scopeOption = document.createElement("option");
+            this.exportButton = this.cDiv.cloneNode();
+            this.exportBody = this.cDiv.cloneNode();
+            this.exportCsv = this.cSpan.cloneNode();
+            this.labelfooter = this.cSpan.cloneNode();
+            this.author = this.cSpan.cloneNode();
+            this.prev = this.cSpan.cloneNode();
+            this.next = this.cSpan.cloneNode();
+            this.pageView = this.cDiv.cloneNode();
+            this.aboutPage = this.cDiv.cloneNode();
+            this.aboutPageBody = this.cDiv.cloneNode();
+            this.aboutPageTitle = this.cDiv.cloneNode();
+            this.aboutPageDesc = this.cDiv.cloneNode();
+            this.aboutPageClose = this.cSpan.cloneNode();
+            this.paragraph = this.cP.cloneNode();
+
+            this.initialize();
         }
     }
 
@@ -93,7 +97,7 @@ class DTgawe {
         this.title.innerHTML = this.name;
 
         this.breload.innerHTML = "&#8634;";
-        this.breload.addEventListener("click", () => { this.pageHandler(1); });
+        this.breload.addEventListener("click", () => { this.refresh(); });
         this.bresize.innerHTML = "&#128470;";
         this.bresize.addEventListener("click", () => { this.resize(); });
         this.bminimize.innerHTML = "&#8213;";
@@ -140,9 +144,9 @@ class DTgawe {
         this.aboutPageTitle.innerHTML = "Gawe Dynamic Table v1.1.0";
         this.aboutPageTitle.classList.add("dt-about-page-title");
         let aboutDesc1 = this.paragraph.cloneNode();
-        aboutDesc1.innerHTML = `&#9997; You can see my recent updates for this JS Class on <a href="https://github.com/gawe007/GaweDynamicTable">GaweDynamicTable</a> repository.`;
+            aboutDesc1.innerHTML = `&#9997; You can see my recent updates for this JS Class on <a href="https://github.com/gawe007/GaweDynamicTable">GaweDynamicTable</a> repository.`;
         let aboutDesc2 = this.paragraph.cloneNode();
-        aboutDesc2.innerHTML = `&#128563; Or just visit <a href="https://github.com/gawe007">My GitHub</a>`;
+            aboutDesc2.innerHTML = `&#128563; Or just visit <a href="https://github.com/gawe007">My GitHub</a>`;
         this.aboutPageDesc.append(aboutDesc1, aboutDesc2);
         this.aboutPageDesc.classList.add("dt-about-page-desc");
         this.aboutPageClose.innerHTML = "X";
@@ -207,34 +211,33 @@ class DTgawe {
      */
     getRowFromDataAsElements(datas) {
         let arrayEl = [];
-        let arrayH = [];
         const tHeader = this.cDiv.cloneNode();
-        tHeader.classList.add("dt-row");
+            tHeader.classList.add("dt-row");
         const tColNum = this.cDiv.cloneNode();
-        tColNum.classList.add("dt-col-num");
+            tColNum.classList.add("dt-col-num");
         const tColData = this.cDiv.cloneNode();
-        tColData.classList.add("dt-col-data");
-        tColNum.innerHTML = "No.";
-        tHeader.append(tColNum);
+            tColData.classList.add("dt-col-data");
+            tColNum.innerHTML = "No.";
+            tHeader.append(tColNum);
         let headers = Object.getOwnPropertyNames(datas[0]);
         let arrHeaders = [];
         for(let i =0; i < headers.length; i++){
 
             const newTColValue = document.createElement('input');
-            newTColValue.name = "value-"+i;
-            newTColValue.id = "dt-value-col-"+i;
-            newTColValue.type = "hidden";
-            newTColValue.value = headers[i];
+                newTColValue.name = "value-"+i;
+                newTColValue.id = "dt-value-col-"+i;
+                newTColValue.type = "hidden";
+                newTColValue.value = headers[i];
 
             const colSort = this.cSpan.cloneNode();
                 colSort.classList.add("dt-col-sort");
-                colSort.innerHTML = this.sortSymbol("desc");
+                colSort.innerHTML = this.sortSymbol();
                 colSort.id = "dt-col-"+i;
-                colSort.addEventListener("click", ()=>{this.toogleSort(i, "desc")});
+                colSort.addEventListener("click", ()=>{this.toogleSort(i, this.sortOrder)});
             const newTColData = tColData.cloneNode();
-            newTColData.innerHTML = "<p class='dt-data'>"+headers[i]+"</p>";
-            newTColData.append(colSort, newTColValue);
-            arrHeaders.push(newTColData);
+                newTColData.innerHTML = "<p class='dt-data'>"+headers[i]+"</p>";
+                newTColData.append(colSort, newTColValue);
+                arrHeaders.push(newTColData);
         }
         tHeader.append(...arrHeaders);
         arrayEl.push(tHeader);
@@ -273,7 +276,7 @@ class DTgawe {
         let firstData = 0;
         let group = Math.floor(this.data.length / this.maxDataPerPage);
         let remain = (this.data.length % this.maxDataPerPage);
-        jumlahHalaman = group + 1;
+            jumlahHalaman = group + 1;
         for (let i = 1; i < jumlahHalaman; i++) {
             let temp = firstData * this.maxDataPerPage;
             firstData += 1;
@@ -308,9 +311,9 @@ class DTgawe {
         this.pageView.innerHTML = "Page " + this.currentHalaman + " out of " + this.halaman.length;
         this.pageView.classList.add("dt-page");
 
-        arrayEl.push(this.prev);
-        arrayEl.push(this.pageView);
-        arrayEl.push(this.next);
+            arrayEl.push(this.prev);
+            arrayEl.push(this.pageView);
+            arrayEl.push(this.next);
 
         return arrayEl;
     }
@@ -327,13 +330,11 @@ class DTgawe {
         let i = 0;
         arr.forEach((el)=>{
             const option = document.createElement("option");
-            if(i == 0){
-                option.selected = "selected";
-            }
-            option.value = i;
-            option.innerHTML = el;
-            arrEl.push(option);
-            i++;
+                option.selected = i === 0 ? "selected" : false ;
+                option.value = i;
+                option.innerHTML = el;
+                arrEl.push(option);
+                i++;
         });
 
         return arrEl;
@@ -347,11 +348,8 @@ class DTgawe {
     searchData(stack) {
         let query = document.getElementById("dt-query").value;
         let resultData = [];
-        let inside = 0;
         let scope = this.areasearch.options[this.areasearch.selectedIndex].value;
-        if(scope !== null || scope !== "")inside = scope ;
-
-        const like = function(search, haystack) {
+        const like = (search, haystack) => {
             if (typeof search !== 'string' || haystack === null) {return false; }
             // Remove special chars
             search = search.replace(new RegExp("([\\.\\\\\\+\\*\\?\\[\\^\\]\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-])", "g"), "\\$1");
@@ -364,10 +362,10 @@ class DTgawe {
         if (query == null || query == "" || query == "undefined") {
             this.pageHandler(1);
         } else {
-            for(let i = 0; i<stack.length; i++){
-                if(like("%"+query+"%", Object.values(stack[i])[scope])){
-                    if(i < this.maxDataPerPage){
-                        resultData.push(stack[i]);
+            for(let i = 0; i<this.data.length; i++){
+                if(like("%"+query+"%", Object.values(this.data[i])[scope])){
+                    if(resultData.length < this.maxDataPerPage){
+                        resultData.push(this.data[i]);
                     }
                 }
             }
@@ -404,7 +402,7 @@ class DTgawe {
                     }
                     for(let s= 0; s < childNo2.children.length; s++) {
                         const elRect = window.getComputedStyle(childNo2.children[s]);
-                        arrColumn.push(elRect.getPropertyValue("width"));
+                            arrColumn.push(elRect.getPropertyValue("width"));
                     }
                     for(let i=0; i < tHeader.children.length; i++) {
                         tHeader.children[i].style = `width: ${arrColumn[i]};`;
@@ -478,6 +476,15 @@ class DTgawe {
     }
 
     /**
+     * @method refresh
+     * @description Refresh the view and reloads the original data.
+     */
+    refresh() {
+        this.data = JSON.parse(JSON.stringify(this.originalData));
+        this.pageHandler(1);
+    }
+
+    /**
      * @method convertDataToCsv
      * @description Convert the data into array of data delimitinated by comma and new line.
      * @param {Array} stream - The array of objects to be converted.
@@ -521,38 +528,30 @@ class DTgawe {
      * @param {String} order - The sorting order.
      * @returns {String} - UTF-8 Symbol in HTML Entity.
      */
-    sortSymbol(order) {
-        return order === "asc" ? "&#9661;" : order === "desc" ? "&#9651;" : console.error("DTGawe error: Something wrong.");
+    sortSymbol() {
+        return this.sortOrder === "asc" ? "&#9661;" : this.sortOrder === "desc" ? "&#9651;" : console.error("DTGawe error: Something wrong.");
     }
 
     /**
      * @method toogleSort
-     * @description Toogle symbol sort when clicked
+     * @description Toogle sort by column number when clicked
      * @param {String} num - The column number
-     * @param {String} action - The action to be executed
+     * @param {String} action - The sort order to be executed
      */
     toogleSort(num, action) {
         const el = document.getElementById("dt-value-col-"+num);
-        const button = document.getElementById("dt-col-"+num);
-        const newButton = button.cloneNode();
-        const parentButton = button.parentNode;
-        if(action === "desc") {
-            console.log(el.value+" Sort desc clicked!");
-            newButton.innerHTML = this.sortSymbol("asc");
-            newButton.addEventListener("click", ()=>{this.toogleSort(num, "asc")});
-            parentButton.replaceChild(newButton, button);
-        } else if (action === "asc"){
-            console.log(el.value+" Sort asc clicked!");
-            newButton.innerHTML = this.sortSymbol("desc");
-            newButton.addEventListener("click", ()=>{this.toogleSort(num, "desc")});
-            parentButton.replaceChild(newButton, button);
-        }
-    }
 
-    /**
-     * @method sortColumn
-     * @description Sort data displayed based wich column header selected to be sorted
-     * @param {String} columnName - The name of column to be sorted
-     * @param {String} order - Ascending or Descending
-     */
+        //Sort the data
+        action === "asc" ? this.data.sort((a,b)=> b[el.value].localeCompare(a[el.value])) 
+        : action === "desc" ? this.data.sort((a,b)=> a[el.value].localeCompare(b[el.value])) 
+        : console.error("DTGawe error: Something Wrong");
+
+        //Setting next sort button action
+        action === "desc" ? this.sortOrder = "asc" 
+        : action === "asc" ? this.sortOrder = "desc" 
+        : console.error("DTGawe error: Something Wrong");
+
+        //Refresh the view body
+        this.pageHandler(1);
+    }
 }
