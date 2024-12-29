@@ -223,7 +223,7 @@ class DTgawe {
             tColNum.classList.add("dt-col-num");
         const tColData = this.cDiv.cloneNode();
             tColData.classList.add("dt-col-data");
-            tColNum.innerHTML = "No.";
+            tColNum.innerHTML = "No";
             tHeader.append(tColNum);
         let headers = Object.getOwnPropertyNames(datas[0]);
         let arrHeaders = [];
@@ -402,7 +402,7 @@ class DTgawe {
                     let widthBody = parseFloat(window.getComputedStyle(this.body).getPropertyValue("width")) - 20;
                     let divideWidthByChildren = widthBody / (bodyChildren[0].children.length - 1);
                     for(let x=0; x<bodyChildren.length; x++) {
-                        for(let d=1; d<bodyChildren[x].children.length; d++){
+                        for(let d=0; d<bodyChildren[x].children.length; d++){
                             bodyChildren[x].children[d].style = `width: ${divideWidthByChildren}px`;
                         }
                     }
@@ -441,7 +441,8 @@ class DTgawe {
      * @description Show/hide the dropdown menu for Export
      */
     toogleExport() {
-        const displayDDExport = this.exportBody.style.display;
+        const displayDDExport = this.exportBody.style.display || "none";
+        console.log("display", displayDDExport);
         if(displayDDExport === "none"){
             this.exportButton.classList.add("dt-export-button-selected");
             this.exportBody.style.display = "block";
