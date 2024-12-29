@@ -30,12 +30,13 @@ The column name is the PropertyName. It's used as the Table Header Name for that
 The data is the PropertyValue. It accept any kind of string, number or UTF-8 symbol. It's suggested to minimize your data length to preserve the view or the overflow will be hidden.
 
 ## Usage/Examples
-1. Include the css file inside your html document.
+1. Make sure you have the `<meta>` tag for `utf-8` and then link the `DynamicTableGawe007.css` file.
 
 ```html
+<meta charset="UTF-8">
 <link rel="stylesheet" href="DynamicTableGawe007.css"/>
 ```
-2. Make sure to call the script before creating your table by calling <script> before any use. Alternatively, you can place this <script> tag on the very top of your page.
+2. Make sure to call the `script` before creating your table by calling `<script>` before any use. Alternatively, you can place this `<script>` tag inside the `<head>` tag.
 
 ```html
 <script src="DTgawe.js" type="text/javascript"></script>
@@ -45,10 +46,10 @@ The data is the PropertyValue. It accept any kind of string, number or UTF-8 sym
 ```javascript
 const parentElement = document.createElement("div");
 ```
-4. Create table by creating a new DTGawe object.
+4. Create table by creating a `new DTGawe()` object.
 
 ```javascript
 const table = new DTgawe("MyTable", data, parentElement, 10);
 ```
 
-Or just download all the files and open the index.html with an editor or a browser.
+Or just download all the files and open the `index.html` with an editor or a browser.
